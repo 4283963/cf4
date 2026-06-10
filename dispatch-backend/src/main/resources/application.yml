@@ -1,9 +1,15 @@
 server:
   port: 8080
+  servlet:
+    context-path: /
 
 spring:
   application:
     name: dispatch-backend
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
   datasource:
     url: jdbc:h2:mem:greenride;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
@@ -16,11 +22,23 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
+        jdbc:
+          batch_size: 50
 
 geofence:
   service:
     url: http://localhost:8000/api/geofence
+    connect-timeout: 2000
+    read-timeout: 3000
+
+logging:
+  level:
+    root: INFO
+    com.greenride.dispatch: INFO
+    org.springframework.web: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

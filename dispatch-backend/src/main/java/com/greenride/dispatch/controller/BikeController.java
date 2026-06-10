@@ -6,6 +6,7 @@ import com.greenride.dispatch.service.BikeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,15 +21,22 @@ public class BikeController {
     }
 
     @PostMapping("/location/report")
-    public ResponseEntity<Map<String, Object>> reportLocation(@RequestBody BikeLocationReportDTO dto) {
-        boolean success = bikeService.reportLocation(dto);
+    public ResponseEntity<Map<String, Object>> reportLocation(
+            @Valid @RequestBody BikeLocationReportDTO dto) {
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("success", success);
-        result.put("bikeId", dto.getBikeId());
-        result.put("message", success ? "坐标上报成功" : "坐标上报失败");
+        BikeService.LocationReportResult result = bikeService.reportLocation(dto);
 
-        return ResponseEntity.ok(result);
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", result.isLocationSaved());
+        response.put("bikeId", result.getBikeId());
+        response.put("locationSaved", result.isLocationSaved());
+        response.put("fenceChecked", result.isFenceChecked());
+        response.put("insideFence", result.isInsideFence());
+        response.put("ticketCreated", result.isTicketCreated());
+        response.put("fenceMessage", result.getFenceMessage());
+        response.put("message", result.getMessage());
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{bikeId}")

@@ -1,16 +1,9 @@
 package com.greenride.dispatch.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "bike")
 public class Bike {
@@ -42,6 +35,35 @@ public class Bike {
 
     @Column(name = "update_time")
     private LocalDateTime updateTime;
+
+    public Bike() {}
+
+    public String getBikeId() { return bikeId; }
+    public void setBikeId(String bikeId) { this.bikeId = bikeId; }
+
+    public String getBikeType() { return bikeType; }
+    public void setBikeType(String bikeType) { this.bikeType = bikeType; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public BigDecimal getBatteryLevel() { return batteryLevel; }
+    public void setBatteryLevel(BigDecimal batteryLevel) { this.batteryLevel = batteryLevel; }
+
+    public BigDecimal getLongitude() { return longitude; }
+    public void setLongitude(BigDecimal longitude) { this.longitude = longitude; }
+
+    public BigDecimal getLatitude() { return latitude; }
+    public void setLatitude(BigDecimal latitude) { this.latitude = latitude; }
+
+    public LocalDateTime getLastReportTime() { return lastReportTime; }
+    public void setLastReportTime(LocalDateTime lastReportTime) { this.lastReportTime = lastReportTime; }
+
+    public LocalDateTime getCreateTime() { return createTime; }
+    public void setCreateTime(LocalDateTime createTime) { this.createTime = createTime; }
+
+    public LocalDateTime getUpdateTime() { return updateTime; }
+    public void setUpdateTime(LocalDateTime updateTime) { this.updateTime = updateTime; }
 
     @PrePersist
     protected void onCreate() {
