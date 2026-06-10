@@ -44,8 +44,9 @@ class GeofenceService:
         fences = [
             {
                 "fence_id": "F001",
-                "name": "东门停车区",
+                "name": "食堂停车区",
                 "type": "parking",
+                "max_capacity": 50,
                 "geometry": Polygon([
                     (116.4030, 39.9150),
                     (116.4045, 39.9150),
@@ -58,6 +59,7 @@ class GeofenceService:
                 "fence_id": "F002",
                 "name": "图书馆停车区",
                 "type": "parking",
+                "max_capacity": 80,
                 "geometry": Polygon([
                     (116.4010, 39.9120),
                     (116.4025, 39.9120),
@@ -70,6 +72,7 @@ class GeofenceService:
                 "fence_id": "F003",
                 "name": "宿舍区停车区",
                 "type": "parking",
+                "max_capacity": 120,
                 "geometry": Polygon([
                     (116.3980, 39.9170),
                     (116.4000, 39.9170),
@@ -82,6 +85,7 @@ class GeofenceService:
                 "fence_id": "F004",
                 "name": "教学楼停车区",
                 "type": "parking",
+                "max_capacity": 150,
                 "geometry": Polygon([
                     (116.4050, 39.9100),
                     (116.4070, 39.9100),
@@ -94,6 +98,7 @@ class GeofenceService:
                 "fence_id": "F005",
                 "name": "体育馆停车区",
                 "type": "parking",
+                "max_capacity": 60,
                 "geometry": Polygon([
                     (116.3990, 39.9090),
                     (116.4010, 39.9090),
@@ -221,6 +226,7 @@ class GeofenceService:
                         "fence_id": row["fence_id"],
                         "name": row["name"],
                         "type": row["type"],
+                        "max_capacity": int(row.get("max_capacity", 50)),
                         "area": round(area_val, 6)
                     })
                 except Exception as e:
@@ -242,8 +248,23 @@ class GeofenceService:
                 "fence_id": row["fence_id"],
                 "name": row["name"],
                 "type": row["type"],
+                "max_capacity": int(row.get("max_capacity", 50)),
                 "area": round(area_val, 6)
             }
         except Exception as e:
             logger.error(f"查询围栏 {fence_id} 异常: {e}")
             return None
+
+    def get_all_fences_with_capacity(self) -> List[Dict]:
+        result = []
+        try:
+            for _, row in self._gdf.iterrows():
+                result.append({
+                    "fence_id": row["fence_id"],
+                    "name": row["name"],
+                    "max_capacity": int(row.get("max_capacity", 50)),
+                    "geometry": row.geometry
+                })
+        except Exception as e:
+            logger.error(f"获取围栏容量数据异常: {e}")
+        return result

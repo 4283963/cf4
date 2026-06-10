@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi import status
-from app.routers import geofence
+from app.routers import geofence, tidal
 import logging
 
 logging.basicConfig(
@@ -18,6 +18,7 @@ app = FastAPI(
 )
 
 app.include_router(geofence.router, prefix="/api/geofence", tags=["电子围栏"])
+app.include_router(tidal.router, prefix="/api/tidal", tags=["潮汐调度"])
 
 
 @app.exception_handler(RequestValidationError)
